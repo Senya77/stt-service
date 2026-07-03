@@ -2,5 +2,6 @@
 .env
 .ipynb
 __pycache__
+tests
 *.wav
 .idea

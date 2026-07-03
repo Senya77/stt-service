@@ -1,0 +1,58 @@
+services:
+  stt-batch:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: stt-gigaam-ctc-batch
+    restart: unless-stopped
+    command: ["uv", "run", "--no-sync", "python", "-m", "src.gigaam_ctc.main_batch"]
+    deploy:
+      resources:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    env_file:
+      - .env
+    ports:
+      - "${GRPC_BATCH_PORT:-50051}:50051"
+
+  stt-stream:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: stt-gigaam-ctc-stream
+    restart: unless-stopped
+    command: ["uv", "run", "--no-sync", "python", "-m", "src.gigaam_ctc.  "]
+    deploy:
+      resources:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    env_file:
+      - .env
+    environment:
+      GRPC_SERVER_PORT: "50051"
+    ports:
+      - "${GRPC_STREAM_PORT:-50052}:50051"
+
+  stt-openai:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: stt-gigaam-ctc-http
+    restart: unless-stopped
+    command: ["uv", "run", "--no-sync", "python", "-m", "src.gigaam_ctc.main_http"]
+    deploy:
+      resources:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    env_file:
+      - .env
+    environment:
+      HTTP_SERVER_PORT: "8080"
+    ports:
+      - "${HTTP_OPENAI_PORT:-8080}:8080"

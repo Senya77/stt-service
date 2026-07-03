@@ -20,12 +20,17 @@ dependencies = [
     "pyannote-audio>=3.4.0",
     "pyctcdecode>=0.5.0",
     "pydub>=0.25.1",
+    "pyyaml>=6.0",
     "safetensors>=0.6.2",
     "soundfile>=0.13.1",
     "torch==2.7.1",
     "torchaudio==2.7.1",
     "transformers==4.49",
     "av>=17.1.0",
+    "ruff>=0.15.20",
+    "ty>=0.0.56",
+    "datasets>=5.0.0",
+    "evaluate>=0.4.6",
 ]
 
 [dependency-groups]
@@ -84,9 +89,3 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
-
-[tool.ruff.lint.per-file-ignores]
-"tests/requests/**" = ["T", "D", "ARG", "B", "E"]
-"tests/stress/**" = ["T", "D"]
-"tests/test_openai_api.py" = ["D"]
-"tests/test_audio_decoder.py" = ["D"]

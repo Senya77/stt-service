@@ -1,0 +1,42 @@
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ffmpeg \
+        libsndfile1 \
+        libc-bin \
+        build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd --create-home --shell /bin/bash noname && \
+    chown -R noname:noname /home/noname
+
+USER noname
+WORKDIR /home/noname
+
+ENV PATH="/home/noname/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    VIRTUAL_ENV="/home/noname/.venv" \
+    PYTHONUNBUFFERED=1
+
+COPY pyproject.toml uv.lock ./
+
+RUN uv sync --no-dev
+
+ENV PATH="/home/noname/.venv/bin:${PATH}"
+
+COPY --chown=noname:noname src/ ./src/
+
+RUN mkdir -p /home/noname/cache/gigaam /home/noname/cache/clearml && \
+    chown -R noname:noname /home/noname/cache
+
+ENV HF_HOME=/home/noname/cache/gigaam \
+    CLEARML_CACHE_DIR=/home/noname/cache/clearml \
+    PYTHONPATH=/home/noname \
+    NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility
+
+EXPOSE 50051
+
+CMD ["uv", "run", "--no-sync", "python", "-m", "src.gigaam_ctc.main_batch"]

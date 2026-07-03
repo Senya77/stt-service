@@ -1,0 +1,15 @@
+# .gitlab-ci.yml
+include:
+  - local: '.gitlab/lint.yml'
+  - local: '.gitlab/build.yml'
+
+default:
+  tags:
+    - #nda
+
+stages:
+  - lint
+  - build
+
+ruff-lint:
+  extends: .lint-service
