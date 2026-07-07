@@ -349,3 +349,16 @@ pre-commit run --all-files
 ### CI
 
 GitLab CI (`.gitlab-ci.yml`): stages lint → build.
+
+### Приложения в Argo-CD
+
+<img width="1553" height="260" alt="арго" src="https://github.com/user-attachments/assets/3a836929-679c-4f8b-b1b1-2fc0af4547d9" />
+
+<img width="1407" height="831" alt="арго2" src="https://github.com/user-attachments/assets/d60d5fda-76f8-4abb-b51a-4416a6766086" />
+
+### Мониторинг сервиса в графане
+
+<img width="1548" height="932" alt="Графана" src="https://github.com/user-attachments/assets/1488f250-caa4-4d5a-abb4-e141df9b236f" />
+
+
+
